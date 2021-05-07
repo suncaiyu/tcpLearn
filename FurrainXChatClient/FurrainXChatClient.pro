@@ -1,4 +1,4 @@
-QT       += core gui network
+QT       += core gui network qml quick quickwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,17 +16,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ChatMessage.cpp \
     ChatWidget.cpp \
     Login.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
+    ChatMessage.h \
     ChatWidget.h \
     Login.h \
     MainWindow.h
 
 FORMS += \
+    ChatMessage.ui \
     ChatWidget.ui \
     Login.ui \
     MainWindow.ui
@@ -35,3 +38,10 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    ConversationPage.qml \
+    TextChat.qml
+
+RESOURCES += \
+    qml.qrc

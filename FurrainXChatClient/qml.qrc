@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ConversationPage.qml</file>
+        <file>TextChat.qml</file>
+        <file>me.png</file>
+        <file>robot.png</file>
+        <file>show.png</file>
+        <file>close_0.png</file>
+        <file>close_1.png</file>
+        <file>min_0.png</file>
+        <file>min_1.png</file>
+        <file>touxiang.jpg</file>
+    </qresource>
+</RCC>

@@ -1,6 +1,7 @@
 ﻿#include "Login.h"
-
+#include <QQmlApplicationEngine>
 #include <QApplication>
+#include <ChatWidget.h>
 
 int main(int argc, char *argv[])
 {
