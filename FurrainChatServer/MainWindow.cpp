@@ -119,22 +119,31 @@ void MainWindow::ReceiveSocketSlot()
         else {
             returnToClient.insert("type", "loadMessage");
             returnToClient.insert("loginResult", 1);   //ok！
+            returnToClient.insert("name", userName);
+            QString str11 = QStringLiteral("select * from userMange where loadState= 1");
+            bool f = query.exec(str11);
+            int count = 0;
+            while (query.next()) {
+                QString name = query.value("userName").toString();
+                returnToClient.insert("zaixianname" + QString::number(count), name);
+                count++;
+            }
             returnToClientDoc.setObject(returnToClient);
             thisSocket->write(returnToClientDoc.toJson());
             userConnection.insert(thisSocket, userName);
             // 自己查询
-            QString str11 = QStringLiteral("select * from userMange where loadState= 1");
-            bool f = query.exec(str11);
-            while (query.next()) {
-                QString name = query.value("userName").toString();
-                qDebug() << name;
-                QJsonObject tongzhi;
-                QJsonDocument tongzhiDoc;
-                tongzhi.insert("type", "yizaixian");
-                tongzhi.insert("name", name);
-                tongzhiDoc.setObject(tongzhi);
-                thisSocket->write(tongzhiDoc.toJson());
-            }
+            //QString str11 = QStringLiteral("select * from userMange where loadState= 1");
+            //bool f = query.exec(str11);
+            //while (query.next()) {
+            //    QString name = query.value("userName").toString();
+            //    qDebug() << name;
+            //    QJsonObject tongzhi;
+            //    QJsonDocument tongzhiDoc;
+            //    tongzhi.insert("type", "yizaixian");
+            //    tongzhi.insert("name", name);
+            //    tongzhiDoc.setObject(tongzhi);
+            //    thisSocket->write(tongzhiDoc.toJson());
+            //}
             QString str1 = QStringLiteral("update userMange set loadState=1 where userName='%4'").
                 arg(userName);
             qDebug() << str1;
@@ -151,6 +160,18 @@ void MainWindow::ReceiveSocketSlot()
                 tongzhi.insert("name", obj.value("userName").toString());
                 tongzhiDoc.setObject(tongzhi);
                 socketVector[i]->write(tongzhiDoc.toJson());
+            }
+        }
+    }
+    else if (obj.value("type") == "chat") {
+        QString to = obj.value("to").toString();
+        QString str = obj.value("content").toString().toHtmlEscaped();
+        qDebug() << str;
+        QList<QTcpSocket *> socketList = userConnection.keys();
+        QList<QString> nameList = userConnection.values();
+        for (int i = 0; i < nameList.size(); ++i) {
+            if (nameList[i] == to) {
+                socketList[i]->write(array);
             }
         }
     }
